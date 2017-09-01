@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addPlayers, savePlayer, updateCurrentPlayerName, updateCurrentPlayerNum, startGame } from '../reducers/game';
+import { addPlayers, savePlayer, updateCurrentPlayerName, updateCurrentPlayerNum, startGame } from '../reducers/addPlayers';
 
 class PlayerForm extends Component {
 
@@ -36,7 +36,7 @@ class PlayerForm extends Component {
 	}
 }
 
-const mapStateToProps = (state) => ({ currentPlayerName: state.game.currentPlayerName, currentPlayerNum: state.game.currentPlayerNum, players: state.game.players, startGameBool: state.game.startGame });
+const mapStateToProps = (state) => ({ currentPlayerName: state.addPlayers.currentPlayerName, currentPlayerNum: state.addPlayers.currentPlayerNum, players: state.addPlayers.players, startGameBool: state.addPlayers.startGame });
 const mapDispatchToProps = { addPlayers, savePlayer, updateCurrentPlayerName, updateCurrentPlayerNum, startGame };
 
 export default connect(

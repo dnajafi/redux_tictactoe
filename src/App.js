@@ -38,7 +38,7 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({ gameStartBool: state.game.startGame });
+const mapStateToProps = (state) => ({ gameStartBool: state.addPlayers.startGame });
 
 export default connect(
   mapStateToProps
