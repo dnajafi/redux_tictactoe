@@ -1,16 +1,19 @@
-import { createStore, combineReducers } from 'redux';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { gameReducer } from './reducers/game';
-import { messageReducer } from './reducers/messages';
+import thunk from 'redux-thunk';
+import gameReducer from './reducers/game';
+import messageReducer from './reducers/messages';
 
-
+/*
+	Everything that is related to the game that is handled by the game reducer 
+	will be accessible through state.game
+*/
 const reducer = combineReducers({
 	game: gameReducer,
 	message: messageReducer
 });
 
-
 export default createStore(
 	reducer,
-	composeWithDevTools()
+	composeWithDevTools(applyMiddleware(thunk))
 );
