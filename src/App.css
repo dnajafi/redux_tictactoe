@@ -14,6 +14,10 @@
   color: white;
 }
 
+.builtBy {
+  margin-top: -13px;
+}
+
 .App-intro {
   font-size: large;
 }
@@ -24,9 +28,12 @@
 }
 
 .message {
-  background-color: #61DAFB;
+  /*background-color: #61DAFB;*/
+  background-color: #222;
   color: white;
-  border: solid 1px #61DAFB;
+  /*border: solid 1px #61DAFB;*/
+  border: solid 1px #222;
+  border-radius: 14px;
   position: absolute;
   text-align: center;
   width:200px;
@@ -47,11 +54,14 @@
 }
 
 .square {
-  background-color: #fff;
+  /*background-color: #fff;*/
+  background-color: #222;
+  color: white;
+
   border: 1px solid #999;
   width: 100px;
   height: 100px;
-  font-size: 1.5em;
+  font-size: 3.5em;
   border-radius: 14px;
   cursor: pointer;
   margin: 2px;
@@ -62,6 +72,5 @@
 }
 
 .startNewGame {
-  position: absolute;
   margin-top: 38px;
 }

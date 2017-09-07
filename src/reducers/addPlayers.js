@@ -21,16 +21,19 @@ export const updatePlayerNum = (playerNum) => ({ type: PLAYER_NUM_UPDATE, payloa
 
 export const addPlayers = (playerNum) => {
 	return (dispatch) => {
-		dispatch(showMessage('Enter Name of Player ' + playerNum))
+		let symbol = playerNum === 1 ? ' (X)' : ' (O)';
+
+		dispatch(showMessage('Enter Name of Player ' + playerNum + symbol))
 	};
 };
 
 export const savePlayer = (name, playerNum, playersLength) => {
 	return (dispatch) => {
+		let symbol = playerNum === 1 ? ' (X)' : ' (O)';
 		dispatch(showMessage('Saving Player'));
 		dispatch(addPlayer(name));
 		(playersLength+1) <= 1 ? 
-			dispatch(showMessage('Enter Name of Player ' + playerNum))
+			dispatch(showMessage('Enter Name of Player ' + playerNum + symbol))
 		:
 			dispatch(showMessage('Time to start game. Please press Start below.'));
 	}
