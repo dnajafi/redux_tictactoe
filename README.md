@@ -4,4 +4,4 @@
 
 https://dnajafi.github.io/redux_tictactoe/
 
-View Live: [I'm an inline-style link](https://dnajafi.github.io/redux_tictactoe/)
+View Live: [Redux Tic Tac Toe](https://dnajafi.github.io/redux_tictactoe/)
