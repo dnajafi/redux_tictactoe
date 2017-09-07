@@ -4,6 +4,7 @@ import logo from './logo.svg';
 import './App.css';
 import Message from './components/Message';
 import PlayerForm from './components/PlayerForm';
+import Board from './components/Board';
 
 class App extends Component {
   render() {
@@ -13,11 +14,8 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h2>Welcome to React/Redux TicTacToe</h2>
         </div>
-
         <div>
-          <p>Hello World!</p>
           <Message />
-
           {!this.props.gameStartBool ?
             <PlayerForm />
           :
@@ -26,13 +24,11 @@ class App extends Component {
 
           {
             this.props.gameStartBool ?
-              <p>GameBoard</p>
+              <Board />
             :
               null
           }
-
         </div>
-
       </div>
     );
   }
@@ -43,4 +39,3 @@ const mapStateToProps = (state) => ({ gameStartBool: state.addPlayers.startGame 
 export default connect(
   mapStateToProps
 )(App);
-

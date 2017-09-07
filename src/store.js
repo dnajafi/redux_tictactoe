@@ -10,7 +10,7 @@ import addPlayersReducer from './reducers/addPlayers';
 	will be accessible through state.game
 */
 const reducer = combineReducers({
-	// game: gameReducer,
+	game: gameReducer,
 	message: messageReducer,
 	addPlayers: addPlayersReducer
 });

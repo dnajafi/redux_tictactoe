@@ -1,4 +1,5 @@
 import { showMessage } from './messages';
+import { setUpNewGame } from './game'; 
 
 const initState = {
 	players: [],
@@ -11,6 +12,7 @@ const PLAYER_ADD = 'PLAYER_ADD';
 const PLAYER_NAME_UPDATE = 'PLAYER_NAME_UPDATE';
 const PLAYER_NUM_UPDATE = 'PLAYER_NUM_UPDATE';
 const START_GAME = 'START_GAME';
+const START_NEW_GAME = 'START_NEW_GAME';
 
 // action creators
 export const addPlayer = (name) => ({ type: PLAYER_ADD, payload: name });
@@ -30,7 +32,7 @@ export const savePlayer = (name, playerNum, playersLength) => {
 		(playersLength+1) <= 1 ? 
 			dispatch(showMessage('Enter Name of Player ' + playerNum))
 		:
-			dispatch(showMessage('Time to start game'));
+			dispatch(showMessage('Time to start game. Please press Start below.'));
 	}
 };
 
@@ -52,16 +54,25 @@ export const startGame = (bool) => {
 	}
 };
 
+export const startNewGame = () => {
+	return (dispatch) => {
+		dispatch({ type: START_NEW_GAME });
+		setUpNewGame(dispatch);
+	}
+};
+
 export default (state = initState, action) => {
 	switch(action.type) {
 		case PLAYER_ADD:
-			return { ...state, currentPlayerName: '', players: state.players.concat(action.payload) }
+			return { ...state, currentPlayerName: '', players: state.players.concat(action.payload) };
 		case PLAYER_NAME_UPDATE:
-			return { ...state, currentPlayerName: action.payload }
+			return { ...state, currentPlayerName: action.payload };
 		case PLAYER_NUM_UPDATE:
-			return { ...state, currentPlayerNum: action.payload }
+			return { ...state, currentPlayerNum: action.payload };
 		case START_GAME:
-			return { ...state, startGame: action.payload }
+			return { ...state, startGame: action.payload };
+		case START_NEW_GAME:
+			return initState;
 		default:
 			return state;
 	}

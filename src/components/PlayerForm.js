@@ -22,16 +22,20 @@ class PlayerForm extends Component {
 
 	render() {
 		return (
-			this.props.players.length < 2 ?
-				<form onSubmit={this.handleSubmit}>
-					<input type="text" 
-						onChange={this.handleInputChange}
-						value={this.props.currentPlayerName}
-						placeholder="Enter name of player"
-					/>
-				</form>
-			:
-			<button onClick={() => this.props.startGame(!this.props.startGameBool)}>Start</button>
+			<div className="form">
+				{
+					this.props.players.length < 2 ?
+						<form onSubmit={this.handleSubmit}>
+							<input type="text" 
+								onChange={this.handleInputChange}
+								value={this.props.currentPlayerName}
+								placeholder="Enter name of player"
+							/>
+						</form>
+					:
+						<button onClick={() => this.props.startGame(!this.props.startGameBool)}>Start</button>
+				}
+			</div>
 		);
 	}
 }

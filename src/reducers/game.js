@@ -1,68 +1,118 @@
-// import { showMessage } from './messages';
+import { showMessage } from './messages';
 
-// const initState = {
-// 	players: [],
-// 	currentPlayerNum: 1,
-// 	currentPlayerName: '',
-// 	startGame: false
-// };
+const initState = {
+	board: [['','',''], ['', '', ''], ['', '', '']],
+	playerSymbols: {
+		0: 'X',
+		1: 'O'
+	},
+	currentPlayer: 1,
+	gameOver: false,
+	moveCount: 0
+};
 
-// const PLAYER_ADD = 'PLAYER_ADD';
-// const PLAYER_NAME_UPDATE = 'PLAYER_NAME_UPDATE';
-// const PLAYER_NUM_UPDATE = 'PLAYER_NUM_UPDATE';
-// const START_GAME = 'START_GAME';
+const UPDATE_BOARD = 'UPDATE_BOARD';
+const GAME_OVER = 'GAME_OVER';
+const CHANGE_PLAYER = 'CHANGE_PLAYER';
+const INCREASE_MOVE_COUNT = 'INCREASE_MOVE_COUNT';
+const SET_UP_NEW_GAME = 'SET_UP_NEW_GAME';
 
-// // action creators
-// export const addPlayer = (name) => ({ type: PLAYER_ADD, payload: name });
-// export const updatePlayerName = (playerName) => ({ type: PLAYER_NAME_UPDATE, payload: playerName });
-// export const updatePlayerNum = (playerNum) => ({ type: PLAYER_NUM_UPDATE, payload: playerNum });
+const updatePosition = (row, column, currBoard) => ({ type: UPDATE_BOARD, payload: {row: row, column: column, board: currBoard} });
+const gameOver = () => ({ type: GAME_OVER });
+const changePlayer = () => ({ type: CHANGE_PLAYER });
+const increaseMoveCount = () => ({ type: INCREASE_MOVE_COUNT });
 
-// export const addPlayers = (playerNum) => {
-// 	return (dispatch) => {
-// 		dispatch(showMessage('Enter Name of Player ' + playerNum))
-// 	};
-// };
+const verifyWin = (board) => {
+	// check diagonals
+	if(board[0][0] === board[1][1] &&  board[1][1] === board[2][2] && board[0][0] !== '') {
+		return true;
+	} else if(board[2][0] === board[1][1] && board[1][1] === board[0][2] & board[2][0] !== '') {
+		return true;
+	}
 
-// export const savePlayer = (name, playerNum, playersLength) => {
-// 	return (dispatch) => {
-// 		dispatch(showMessage('Saving Player'));
-// 		dispatch(addPlayer(name));
-// 		(playersLength+1) <= 1 ? 
-// 			dispatch(showMessage('Enter Name of Player ' + playerNum))
-// 		:
-// 			dispatch(showMessage('Time to start game'));
-// 	}
-// };
+	// check columns
+	for(let i=0; i<3; i++) {
+		if(board[0][i] === board[1][i] && board[1][i] === board[2][i] && board[0][i] !== '') {
+			return true;
+		}
+	}
 
-// export const updateCurrentPlayerName = (playerName) => {
-// 	return (dispatch) => {
-// 		dispatch(updatePlayerName(playerName));
-// 	};
-// };
+	//check rows
+	for(let i=0; i<3; i++) {
+		if(board[i][0] === board[i][1] && board[i][1] === board[i][2] && board[i][0] !== '') {
+			return true;
+		}
+	}
 
-// export const updateCurrentPlayerNum = (playerNum) => {
-// 	return (dispatch) => {
-// 		dispatch(updatePlayerNum(playerNum));
-// 	};
-// };
+	return false;
+};
 
-// export const startGame = (bool) => {
-// 	return (dispatch) => {
-// 		dispatch({ type: START_GAME, payload: bool });
-// 	}
-// };
+export const takeTurn = (row, column, currBoard, currPlayerSymbol, currPlayerName) => {
+	return (dispatch) => {
+		if(currBoard[row][column] === '') {
+			currBoard[row][column] = currPlayerSymbol;
+			dispatch(updatePosition(row, column, currBoard));
+			let win = verifyWin(currBoard);
 
-// export default (state = initState, action) => {
-// 	switch(action.type) {
-// 		case PLAYER_ADD:
-// 			return { ...state, currentPlayerName: '', players: state.players.concat(action.payload) }
-// 		case PLAYER_NAME_UPDATE:
-// 			return { ...state, currentPlayerName: action.payload }
-// 		case PLAYER_NUM_UPDATE:
-// 			return { ...state, currentPlayerNum: action.payload }
-// 		case START_GAME:
-// 			return { ...state, startGame: action.payload }
-// 		default:
-// 			return state;
-// 	}
-// };
+			if(!win) {
+		 		dispatch(changePlayer());
+				dispatch(increaseMoveCount());
+			} else {
+				dispatch(showMessage(currPlayerName + ' Wins!'));
+				dispatch(gameOver());
+			}
+		} else {
+			dispatch(showMessage('That Spot is Already Taken. Please choose another.'));
+		}
+	};
+};
+
+export const updatePlayer = () => {
+	return (dispatch) => {
+		dispatch(changePlayer());
+	};
+};
+
+export const updateMessage = (currPlayerName) => {
+	return (dispatch) => {
+		dispatch(showMessage('It is your turn ' + currPlayerName + '.'));
+	};
+};
+
+export const staleMate = () => {
+	return (dispatch) => {
+		dispatch(showMessage('Stalemate. Nobody wins!'));
+		dispatch(gameOver());
+	};
+};
+
+export const gameIsOver = () => {
+	return (dispatch) => {
+		dispatch(gameOver());
+		dispatch(showMessage('GAME IS OVER!'));
+	};
+};
+
+export const setUpNewGame = (dispatch) => {
+	dispatch({ type: SET_UP_NEW_GAME });
+};
+
+export default (state = initState, action) => {
+	switch(action.type) {
+		case UPDATE_BOARD:
+			return { ...state, board: action.payload.board };
+		case GAME_OVER:
+			return { ...state, gameOver: true };
+		case CHANGE_PLAYER:
+			let nextPlayer = state.currentPlayer === 1 ? 2 : 1;
+			return { ...state, currentPlayer: nextPlayer };
+		case INCREASE_MOVE_COUNT:
+			let newMoveCount = state.moveCount + 1;
+			return { ...state, moveCount: newMoveCount };		
+		case SET_UP_NEW_GAME:
+			return  { board: [['','',''], ['', '', ''], ['', '', '']], playerSymbols: { 0: 'X', 1: 'O' }, currentPlayer: 1, gameOver: false, moveCount: 0 };
+		default:
+			return state;
+	}
+
+};
